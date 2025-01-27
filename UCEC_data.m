@@ -4,7 +4,7 @@ clc;
 close all;
 [profile,pipi]= xlsread('UCEC_good.xlsx');
 
-fid=fopen('UCEC_Gene_network.txt'); % 改成对应的文件名
+fid=fopen('UCEC_Gene_network.txt'); % 赂脛鲁脡露脭脫娄碌脛脦脛录镁脙没
 adjacent_network={};
 j=0;
 while ~feof(fid)
@@ -97,38 +97,6 @@ xlabel('Stages');
 ylabel('Entropy');
 %plot(t,aver_comidx,'r','LineWidth',3);
 title('Average Entropy for UCEC');
-
-
-
-%%
-
-%%%%%%%%% selected marker genes %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for na=1:total_node_num
-    center=adjacent_network{na}{1};
-    gene_name(na)=pipi(str2num(center));
-end
-Land_entropy_size=size(Entropy);
-patient_num=[167,146,25,6,13,40,6,25];
-selected_deltaH_genes=[];
-fid=fopen('selected_UCEC_genes.txt','w');
-selected_deltaH_genes=containers.Map;
-for s=1:patient_num(5)
-    [tmp_com_idx,idx]=sort(Entropy(:,s,5),'descend');
-    %aver_com_idx(l)=mean(tmp_com_idx(1:floor(total_node_num*0.01)));
-    tmp_genes=gene_name(idx(1:floor(Land_entropy_size(1)*0.05)));
-    for i=1:length(tmp_genes)
-        if isKey(selected_deltaH_genes,tmp_genes{i})==0
-            selected_deltaH_genes(tmp_genes{i})=1;
-        else
-            selected_deltaH_genes(tmp_genes{i})=selected_deltaH_genes(tmp_genes{i})+1;
-        end
-    end
-end
-genes=selected_deltaH_genes.keys();
-for i=1:length(genes)
-    fprintf(fid,'%s\t%d\n',genes{i},selected_deltaH_genes(genes{i}));
-end
-fclose(fid);
 
 
 
